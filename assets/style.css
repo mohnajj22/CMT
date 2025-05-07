@@ -1,0 +1,247 @@
+/* GENERAL PAGE STYLES */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* NAVBAR STYLES */
+.navbar {
+    background-color: #003d5b;
+    padding: 0.8rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Center container */
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Left side: avatar + logo */
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Avatar image styling */
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-right: 0.5rem;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.nav-avatar:hover {
+    transform: scale(1.1);
+}
+
+/* Logo styling */
+.nav-logo {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Right side: links + search */
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Nav links */
+.nav-right a {
+    color: white;
+    text-decoration: none;
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-right a:hover {
+    color: #00bcd4;
+    text-decoration: underline;
+}
+
+/* Search form */
+.nav-search {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.search-input {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 20px 0 0 20px;
+    font-size: 0.9rem;
+    width: 140px;
+    transition: width 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    width: 200px;
+}
+
+.search-button {
+    padding: 6px 12px;
+    border: none;
+    background-color: #00bcd4;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0097a7;
+}
+
+/* Dropdown menu under avatar */
+.avatar-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-width: 120px;
+    z-index: 1000;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    color: #003d5b;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f4f4f4;
+}
+
+/* CONTAINER */
+.container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HEADINGS */
+h2 {
+    color: #005792;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ALERT MESSAGES */
+.alert {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-left: 5px solid #005792;
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    border-color: #003d5b;
+    color: #333;
+}
+
+/* PROJECT LIST STYLES */
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.project-item {
+    background-color: #e0f0ff;
+    border: 1px solid #b0d4ee;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-3px);
+}
+
+.project-link {
+    text-decoration: none;
+    color: #005792;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.project-link:hover {
+    text-decoration: underline;
+    color: #003d5b;
+}
+
+/* FORM STYLES */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-size: 1rem;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.btn-primary {
+    background-color: #005792;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #003d5b;
+}
