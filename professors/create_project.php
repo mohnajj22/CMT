@@ -53,6 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php endif; ?>
 
     <form method="POST" action="">
+    <label for="project_image">Project Image</label>
+    <input type="file" name="project_image" id="project_image">
+
         <div class="mb-3">
             <label for="title" class="form-label">Project Title</label>
             <input type="text" class="form-control" name="title" id="title" required>

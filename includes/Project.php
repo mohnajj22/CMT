@@ -24,12 +24,11 @@ class Project {
 
     // Get all projects for a specific professor (by professor_id)
     public function getProjectsByProfessor($professor_id) {
-        $query = "SELECT * FROM projects WHERE created_by = :professor_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':professor_id', $professor_id);
-        $stmt->execute();
+        $stmt = $this->conn->prepare("SELECT * FROM projects WHERE professor_id = ?");
+        $stmt->execute([$professor_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     public function getAllProjects() {
         $query = "SELECT * FROM projects";
         $stmt = $this->conn->prepare($query);

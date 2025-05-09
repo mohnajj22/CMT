@@ -41,9 +41,9 @@ if (isset($_SESSION['user_id'])) {
     <div class="nav-right">
       <?php if (isset($_SESSION['user_id'])): ?>
         <a href="<?= $base ?>team_members/enroll_project.php">Enroll in Project</a>
-
+        <a href="../team_members/my_project.php">My Project</a>
         <a href="<?= $base ?>team_members/my_tasks.php">My Tasks</a>
-        <a href="<?= $base ?>team_members/dashboard.php">My Project</a>
+        <a href="<?= $base ?>team_members/dashboard.php">Team Dashboard</a>
         <a href="<?= $base ?>team_members/submit_work.php">Submit Work</a>
       <?php endif; ?>
     </div>

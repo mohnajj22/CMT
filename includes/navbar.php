@@ -29,6 +29,8 @@ if (isset($_SESSION['user_id'])) {
         <div class="avatar-dropdown">
           <!-- Inline styling used here for guaranteed small circle -->
           <img src="<?= $avatar ?>" alt="Avatar" id="avatarBtn" style="width:32px; height:32px; border-radius:50%; object-fit:cover; margin-right: 0.5rem; cursor:pointer;">
+          <img src="../<?= $profile_pic ?>" alt="Avatar" class="avatar">
+
           <div class="dropdown-menu" id="avatarMenu">
             <a href="<?= $base ?>professors/profile.php">Profile</a>
             <a href="<?= $base ?>logout.php">Logout</a>
