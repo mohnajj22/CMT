@@ -18,8 +18,8 @@ if (!isset($_GET['id'])) {
 }
 
 $project_id = $_GET['id'];
-$db = new Database();
-$conn = $db->connect();
+$conn = Database::getInstance()->getConnection();
+
 $projectObj = new Project($conn);
 $project = $projectObj->getProjectById($project_id);
 
@@ -54,58 +54,114 @@ if (!$project) {
       margin-top: 0.5rem;
     }
     .btn:hover { background-color: #003d5b; }
-    .progress-bar {
-      background: #eee;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 20px;
-      margin-top: 10px;
+    .modal {
+      display: none;
+      position: fixed;
+      top: 10%;
+      left: 25%;
+      width: 50%;
+      background-color: #fff;
+      padding: 20px;
+      border: 2px solid #ccc;
+      z-index: 9999;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .progress-bar-fill {
-      height: 100%;
-      background-color: #00b894;
-      width: 60%;
-      text-align: right;
-      padding-right: 10px;
-      color: white;
-      line-height: 20px;
+    .modal button {
+      margin-right: 10px;
+    }
+    .grades-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .grades-table th, .grades-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    .grades-table th {
+      background-color: #f4f4f4;
     }
   </style>
 </head>
 <body>
- 
 
-  <div class="project-details">
-    <h2>Project: <?= htmlspecialchars($project['title']) ?></h2>
-    <p><strong>Deadline:</strong> <?= htmlspecialchars($project['deadline']) ?></p>
+<div class="project-details">
+  <h2>Project: <?= htmlspecialchars($project['title']) ?></h2>
+  <p><strong>Deadline:</strong> <?= htmlspecialchars($project['deadline']) ?></p>
 
-    <div class="section">
-      <h3>Assign Task</h3>
-      <p>Assign a new task to a team member (select from database - not implemented yet).</p>
-      <a href="assign_task.php?project_id=<?= $project['id'] ?>" class="btn">Assign New Task</a>
-    </div>
-
-    <div class="section">
-      <h3>Upload File</h3>
-      <p>Upload a related document or deliverable to the project folder.</p>
-      <a href="assign_task.php?project_id=<?= $project['id'] ?>" class="btn">Upload File</a>
-    </div>
-
-    <div class="section">
-      <h3>Team Members</h3>
-      <ul>
-        <li>Ahmed Alnajeh - Backend</li>
-        <li>Mohamed Alnajeh - Frontend</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h3>Task Progress</h3>
-      <p>Current completion status of all assigned tasks:</p>
-      <div class="progress-bar">
-        <div class="progress-bar-fill">60%</div>
-      </div>
-    </div>
+  <div class="section">
+    <h3>Assign Task</h3>
+    <p>Assign a new task to a team member (select from database - not implemented yet).</p>
+    <a href="assign_task.php?project_id=<?= $project['id'] ?>" class="btn">Assign New Task</a>
   </div>
+
+  <div class="section">
+    <h3>Upload File</h3>
+    <p>Upload a related document or deliverable to the project folder.</p>
+    <a href="assign_task.php?project_id=<?= $project['id'] ?>" class="btn">Upload File</a>
+  </div>
+
+  <div class="section">
+    <h3>Team Members</h3>
+    <ul>
+      <li>Ahmed Alnajeh - Backend</li>
+      <li>Mohamed Alnajeh - Frontend</li>
+    </ul>
+  </div>
+
+  <!-- 🔁 REPLACED TASK PROGRESS WITH GRADES SECTION -->
+  <div class="section">
+    <h3>Grades</h3>
+    <?php
+      $stmt = $conn->prepare("SELECT s.id AS submission_id, s.task_id, s.file_path, s.grade, s.feedback, s.submitted_at,
+                                     t.title AS task_title, u.name AS member_name
+                              FROM submissions s
+                              JOIN tasks t ON s.task_id = t.id
+                              JOIN project_members pm ON pm.user_id = s.member_id
+                              JOIN users u ON u.id = s.member_id
+                              WHERE t.project_id = :project_id");
+      $stmt->execute(['project_id' => $project_id]);
+      $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    ?>
+
+    <?php if (count($submissions) === 0): ?>
+      <p>No submissions yet.</p>
+    <?php else: ?>
+      <table class="grades-table">
+        <tr>
+          <th>Task</th>
+          <th>Student</th>
+          <th>File</th>
+          <th>Status</th>
+          <th>Grade</th>
+        </tr>
+        <?php foreach ($submissions as $sub): ?>
+          <tr>
+            <td><?= htmlspecialchars($sub['task_title']) ?></td>
+            <td><?= htmlspecialchars($sub['member_name']) ?></td>
+            <td><a href="<?= $sub['file_path'] ?>" target="_blank">Download</a></td>
+            <td><?= $sub['grade'] !== null ? 'Graded' : 'Pending' ?></td>
+            <td>
+              <button onclick="document.getElementById('modal-<?= $sub['submission_id'] ?>').style.display='block'">Grade</button>
+            </td>
+          </tr>
+
+          <!-- Modal -->
+          <div id="modal-<?= $sub['submission_id'] ?>" class="modal">
+            <h4>Grade Submission</h4>
+            <form action="grade_submission.php" method="post">
+              <input type="hidden" name="submission_id" value="<?= $sub['submission_id'] ?>">
+              <label>Grade (0–100):</label>
+              <input type="number" name="grade" min="0" max="100" value="<?= $sub['grade'] ?>"><br><br>
+              <label>Feedback (optional):</label><br>
+              <textarea name="feedback" rows="4" cols="50"><?= htmlspecialchars($sub['feedback']) ?></textarea><br><br>
+              <button type="submit">Submit</button>
+              <button type="button" onclick="document.getElementById('modal-<?= $sub['submission_id'] ?>').style.display='none'">Cancel</button>
+            </form>
+          </div>
+        <?php endforeach; ?>
+      </table>
+    <?php endif; ?>
+  </div>
+</div>
 </body>
 </html>

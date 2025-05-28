@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'member') {
 }
 
 require_once '../includes/Database.php';
-$pdo = (new Database())->connect();
+$pdo = Database::getInstance()->getConnection();
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

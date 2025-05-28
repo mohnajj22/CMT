@@ -10,7 +10,7 @@ require_once $base . 'includes/Database.php';
 include '../includes/navbar_member.php';
 
 
-$pdo = (new Database())->connect();
+$pdo = Database::getInstance()->getConnection();
 $user_id = $_SESSION['user_id'];
 
 $stmt = $pdo->prepare("SELECT name, email, role, profile_pic FROM users WHERE id = ?");

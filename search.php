@@ -12,8 +12,7 @@ $query = trim($_GET['q'] ?? '');
 $results = ['projects' => [], 'tasks' => [], 'files' => []];
 
 if ($query !== '') {
-    $db = new Database();
-    $pdo = $db->connect();
+  $pdo = Database::getInstance()->getConnection();
     $like = "%{$query}%";
 
     // Search projects

@@ -251,3 +251,81 @@ img.avatar {
     border-radius: 50%;
     object-fit: cover;
 }
+/* ======= GRADES PAGE STYLES (Canvas-Inspired) ======= */
+/* Canvas-style Grade Display */
+.grade-card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    background: #fff;
+}
+
+.grade-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #d6006e;
+    margin-bottom: 0.5rem;
+}
+
+.grade-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.grade-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 6px solid #d6006e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #d6006e;
+    margin-right: 1rem;
+    background-color: #fff;
+    box-shadow: inset 0 0 0 6px #f9f9f9;
+}
+
+.grade-meta {
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.download-link {
+    margin-top: 0.5rem;
+    display: inline-block;
+    color: #005792;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    text-decoration: underline;
+}
+.notification-dropdown {
+    position: relative;
+}
+
+.notification-dropdown .dropdown-menu {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+}
+
+.notification-dropdown .dropdown-menu.show {
+    display: block;
+}
+

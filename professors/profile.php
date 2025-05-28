@@ -11,8 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
-$db = new Database();
-$conn = $db->connect();
+$conn = Database::getInstance()->getConnection();
 
 $message = "";
 

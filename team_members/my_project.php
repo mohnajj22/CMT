@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$db = (new Database())->connect();
+$db = Database::getInstance()->getConnection();
 
 // Fetch project ID for the logged-in team member
 $stmt = $db->prepare("SELECT project_id FROM project_members WHERE user_id = ?");

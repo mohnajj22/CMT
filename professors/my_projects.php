@@ -10,10 +10,10 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
-
 $professor_id = $_SESSION['user_id'];
-$projectObj = new Project((new Database())->connect());
+$projectObj = new Project(Database::getInstance()->getConnection());
 $projects = $projectObj->getProjectsByProfessor($professor_id);
+
 ?>
 
 <!DOCTYPE html>

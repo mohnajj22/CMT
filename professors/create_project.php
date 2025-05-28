@@ -11,8 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'professor') {
 $professor_id = $_SESSION['user_id'];
 $message = "";
 
-$db = new Database();
-$conn = $db->connect();
+$conn = Database::getInstance()->getConnection();  // Singleton instance
 
 $projectObj = new Project($conn);
 
