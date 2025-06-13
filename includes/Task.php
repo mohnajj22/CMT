@@ -8,11 +8,12 @@ class Task {
     }
 
     // Assign a task to a team member
-    public function assignTask($title, $deadline, $assigned_to, $project_id) {
-        $sql = "INSERT INTO tasks (title, deadline, assigned_to, project_id) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$title, $deadline, $assigned_to, $project_id]);
-    }
+   public function assignTask($title, $deadline, $assigned_to, $project_id) {
+    $sql = "INSERT INTO tasks (title, deadline, assigned_to, project_id) VALUES (?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([$title, $deadline, $assigned_to, $project_id]);
+}
+
     
 
     // Get all tasks for a specific project
@@ -46,6 +47,13 @@ class Task {
             ':file' => $file
         ]);
     }
+    public function submitWork($task_id, $member_id, $file_path) {
+    $sql = "INSERT INTO submissions (task_id, member_id, file_path, submitted_at) 
+            VALUES (?, ?, ?, NOW())";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute([$task_id, $member_id, $file_path]);
+}
+
     
 }
 ?>
