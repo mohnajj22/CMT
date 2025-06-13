@@ -1,59 +1,40 @@
 <?php
 class Task {
-    private $conn;
-    private $table = 'tasks';
+    private $pdo;
 
-    public function __construct($db) {
-        $this->conn = $db;
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
-    // Assign a task to a team member
-   public function assignTask($title, $deadline, $assigned_to, $project_id) {
-    $sql = "INSERT INTO tasks (title, deadline, assigned_to, project_id) VALUES (?, ?, ?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute([$title, $deadline, $assigned_to, $project_id]);
-}
+    protected function prepareInsertTask() {
+        return $this->pdo->prepare("INSERT INTO tasks (title, deadline, assigned_to, project_id) VALUES (?, ?, ?, ?)");
+    }
 
-    
+    public function assignTask($title, $deadline, $assigned_to, $project_id) {
+        $stmt = $this->prepareInsertTask();
+        return $stmt->execute([$title, $deadline, $assigned_to, $project_id]);
+    }
 
-    // Get all tasks for a specific project
     public function getTasksByProject($project_id) {
-        $query = "SELECT * FROM " . $this->table . " WHERE project_id = :project_id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':project_id', $project_id);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare("SELECT * FROM tasks WHERE project_id = ?");
+        $stmt->execute([$project_id]);
+        return $stmt->fetchAll();
     }
 
-    // Get all team members (to assign tasks)
     public function getAllTeamMembers() {
-        $query = "SELECT id, name FROM users WHERE role = 'team_member'";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->pdo->prepare("SELECT id, name FROM users WHERE role = 'team_member'");
         $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
-    public function create($title, $description, $deadline, $project_id, $file = null) {
-        $query = "INSERT INTO tasks (title, description, deadline, project_id, file)
-                  VALUES (:title, :description, :deadline, :project_id, :file)";
-        
-        $stmt = $this->conn->prepare($query);
-        return $stmt->execute([
-            ':title' => $title,
-            ':description' => $description,
-            ':deadline' => $deadline,
-            ':project_id' => $project_id,
-            ':file' => $file
-        ]);
-    }
-    public function submitWork($task_id, $member_id, $file_path) {
-    $sql = "INSERT INTO submissions (task_id, member_id, file_path, submitted_at) 
-            VALUES (?, ?, ?, NOW())";
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute([$task_id, $member_id, $file_path]);
-}
 
-    
+    public function create($title, $deadline, $assigned_to, $project_id) {
+        $stmt = $this->pdo->prepare("INSERT INTO tasks (title, deadline, assigned_to, project_id) VALUES (?, ?, ?, ?)");
+        return $stmt->execute([$title, $deadline, $assigned_to, $project_id]);
+    }
+
+    public function submitWork($task_id, $file_name) {
+        $stmt = $this->pdo->prepare("UPDATE tasks SET submission_file = ?, status = 'submitted' WHERE id = ?");
+        return $stmt->execute([$file_name, $task_id]);
+    }
 }
 ?>
